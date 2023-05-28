@@ -1,26 +1,21 @@
-const app = require('express')();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const express = require('express');
+const robot = require("robotjs");
 
+const app = express();
 const port = 3001;
 
-io.on('connection', (socket) => {
-  console.log('A client connected');
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-  // Handle the 'test_message' event
-  socket.on('test_message', (message) => {
-    console.log('Received test message:', message);
-    // You can perform any actions here when the test message is received from the mobile app
-    // For example, you can send a success message back to the mobile app
-    socket.emit('test_success', 'Test message received successfully');
-  });
+app.post('/test-connection', (req, res) => {
+  console.log('Received message:', req.body);
+  res.send('Message received successfully');
 
-  // Handle disconnection
-  socket.on('disconnect', () => {
-    console.log('A client disconnected');
-  });
+  // Set the mouse cursor position
+  const { x, y } = req.body;
+  robot.moveMouse(x, y);
 });
 
-http.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
