@@ -1,16 +1,5 @@
 # mmouse
 
-A new Flutter project.
+This is Flutter draft project, contains of two sides: (client "Flutter App", and server "Node.js"). The aim of project is to allow mobile device to connect to a PC or laptop in the same Wifi network to use the mobile device as a mouse cursor controller using "Motion Sensors Accelemoter". 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
