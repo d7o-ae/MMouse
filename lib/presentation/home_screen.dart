@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mmouse/data/sensor_data_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  SensorData? sensorData; // Define sensorData at the class level
+
   @override
   void initState() {
     super.initState();
@@ -30,11 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
             Consumer<SensorDataProvider>(
               builder: (context, sensorData, _) {
                 if (sensorData.sensorData != null) {
+                  this.sensorData = sensorData.sensorData; // Update sensorData
                   return Column(
                     children: [
-                      Text('X: ${sensorData.sensorData!.x.toStringAsFixed(2)}'),
-                      Text('Y: ${sensorData.sensorData!.y.toStringAsFixed(2)}'),
-                      Text('Z: ${sensorData.sensorData!.z.toStringAsFixed(2)}'),
+                      Text('X: ${this.sensorData!.x.toStringAsFixed(2)}'),
+                      Text('Y: ${this.sensorData!.y.toStringAsFixed(2)}'),
+                      //Text('Z: ${this.sensorData!.z.toStringAsFixed(2)}'),
                       ElevatedButton(
                         onPressed: () => testConnection(context),
                         child: const Text("Test Connection"),
@@ -54,7 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void testConnection(BuildContext context) async {
     const url = 'http://192.168.100.5:3001/test-connection';
-    final response = await http.post(Uri.parse(url), body: 'Test message');
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'x': sensorData!.x, // Access x value from sensorData
+        'y': sensorData!.y, // Access y value from sensorData
+      }),
+    );
 
     if (response.statusCode == 200) {
       print('Test connection successful');

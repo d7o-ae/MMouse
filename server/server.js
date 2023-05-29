@@ -9,11 +9,17 @@ app.use(express.json());
 
 app.post('/test-connection', (req, res) => {
   console.log('Received message:', req.body);
-  res.send('Message received successfully');
+
+  // Extract the x and y values from the request body
+  const { x, y } = req.body;
+  
+  // get current mouse pos
+  var mouse = robot.getMousePos();
 
   // Set the mouse cursor position
-  const { x, y } = req.body;
-  robot.moveMouse(x, y);
+  robot.moveMouse(mouse.x +x, mouse.y + y);
+
+  res.send('Message received successfully');
 });
 
 app.listen(port, () => {
